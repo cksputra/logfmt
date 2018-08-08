@@ -1,8 +1,8 @@
-#include "CustomLogger.h"
+#include "logfmt.h"
 
 #define toFile false
 
-// Compile with "g++ example.cpp CustomLogger.cpp -o example -Wall -Wextra -pedantic -std=c++17 -pthread -Ispdlog_lib -fmax-errors=1 -O3 -march=native"
+// Compile with "g++ example.cpp logfmt.cpp -o example -Wall -Wextra -pedantic -std=c++17 -pthread -Iexternal/spdlog/include -fmax-errors=1 -O3 -march=native"
 // dont forget to create logs folder if logging to file
 
 int main()
@@ -10,7 +10,7 @@ int main()
   std::string a ="testing";
   float float_test = 2.8;
   long long_test = 100;
-  CustomLogger log("test", toFile);
+  logfmt log("test", toFile);
 
   spdlog::set_level(spdlog::level::trace);
   log.WithField(log.custom_field={{"animal", "walrus"}, {"total", 100}}).info("INFO of WALRUS and its total");

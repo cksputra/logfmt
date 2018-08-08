@@ -22,3 +22,27 @@
 [2018-08-07 17:18:01.156] [test] [warning] This is WARN with custom key animal = "griffin" rider = "azure" weapon = "spear" 
 [2018-08-07 17:18:01.156] [test] [critical] This is CRITICAL with custom key animal = "griffin" rider = "azure" weapon = "spear" 
 [2018-08-07 17:18:01.156] [test] [error] This is ERROR with custom key animal = "griffin" rider = "azure" weapon = "spear" 
+[2018-08-07 17:20:39.675] [test] [info] INFO of WALRUS and its total animal = "walrus" total = 100 
+[2018-08-07 17:20:39.677] [test] [info] No Walrus 
+[2018-08-07 17:20:39.677] [test] [debug] DEBUG of HORSE and its total animal = "horse" total = 90 
+[2018-08-07 17:20:39.677] [test] [debug] No Horse
+{ "date" : "07-08-2018" , "time" : "17:20:39" , "name" : "test" , "level" : "trace" , "message" : "TRACE of BIRD and its total" , "animal" : "bird" , "total" : 40.500000 }
+{ "date" : "07-08-2018" , "time" : "17:20:39" , "name" : "test" , "level" : "trace" , "message" : "No Bird" }
+{ "date" : "07-08-2018" , "time" : "17:20:39" , "name" : "test" , "level" : "warning" , "message" : "WARN of DOG and its total" , "animal" : "dog" , "total" : 2.800000 }
+{ "date" : "07-08-2018" , "time" : "17:20:39" , "name" : "test" , "level" : "warning" , "message" : "No Dog" }
+[2018-08-07 17:20:39.677] [test] [critical] CRITICAL of CAT and its total animal = "cat" total = 100 
+[2018-08-07 17:20:39.677] [test] [critical] No Cat
+[2018-08-07 17:20:39.677] [test] [error] ERROR of FALCON and its total animal = "falcon" total = 10 
+[2018-08-07 17:20:39.677] [test] [error] No Falcon
+{ "date" : "07-08-2018" , "time" : "17:20:39" , "name" : "test" , "level" : "info" , "message" : "This is INFO with custom key" , "float" : 2.800000 , "long" : 100 , "string" : "testing" }
+{ "date" : "07-08-2018" , "time" : "17:20:39" , "name" : "test" , "level" : "debug" , "message" : "This is DEBUG with custom key" , "float" : 2.800000 , "long" : 100 , "string" : "testing" }
+{ "date" : "07-08-2018" , "time" : "17:20:39" , "name" : "test" , "level" : "trace" , "message" : "This is TRACE with custom key" , "float" : 2.800000 , "long" : 100 , "string" : "testing" }
+{ "date" : "07-08-2018" , "time" : "17:20:39" , "name" : "test" , "level" : "warning" , "message" : "This is WARN with custom key" , "float" : 2.800000 , "long" : 100 , "string" : "testing" }
+{ "date" : "07-08-2018" , "time" : "17:20:39" , "name" : "test" , "level" : "critical" , "message" : "This is CRITICAL with custom key" , "float" : 2.800000 , "long" : 100 , "string" : "testing" }
+{ "date" : "07-08-2018" , "time" : "17:20:39" , "name" : "test" , "level" : "error" , "message" : "This is ERROR with custom key" , "float" : 2.800000 , "long" : 100 , "string" : "testing" }
+[2018-08-07 17:20:39.677] [test] [info] This is INFO with custom key animal = "griffin" rider = "azure" weapon = "spear" 
+[2018-08-07 17:20:39.677] [test] [debug] This is DEBUG with custom key animal = "griffin" rider = "azure" weapon = "spear" 
+[2018-08-07 17:20:39.677] [test] [trace] This is TRACE with custom key animal = "griffin" rider = "azure" weapon = "spear" 
+[2018-08-07 17:20:39.677] [test] [warning] This is WARN with custom key animal = "griffin" rider = "azure" weapon = "spear" 
+[2018-08-07 17:20:39.677] [test] [critical] This is CRITICAL with custom key animal = "griffin" rider = "azure" weapon = "spear" 
+[2018-08-07 17:20:39.677] [test] [error] This is ERROR with custom key animal = "griffin" rider = "azure" weapon = "spear" 
