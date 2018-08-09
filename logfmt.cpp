@@ -10,32 +10,21 @@ std::string logfmt::Entry::AddQuotation(std::string msg) //return quotation in m
   return "\"" + msg + "\"";
 }
 
-std::string logfmt::Entry::JSONformatter() //return json formatter
+void logfmt::Entry::processKey(std::string& msg)
 {
-  return "\"date\" : \"%d-%m-%Y\" , \"time\" : \"%H:%M:%S\" , \"name\" : \"%n\" , \"level\" : \"%^%l%$\" , \"message\" : \"%v\" ";
-}
-
-std::string logfmt::Entry::processPattern(std::string pattern)
-{
-  if(JSON) //jsonform is true
-  {
-    return "{ " + JSONformatter() + pattern + "}";
-  }
-  else //jsonform is false
-  {
-    return "%+ " + pattern;
-  }
-}
-
-std::string logfmt::Entry::processKey()
-{
-  std::string pattern ="";
+  std::string pattern =" ";
 
   for (auto& [key,val] : entry_field)
   {
     pattern = pattern + casting(key, val);
   }
-  return processPattern(pattern);
+
+  if(JSON)
+  {
+    msg = AddQuotation(msg);
+  }
+
+  msg = msg + pattern;
 }
 
 std::string logfmt::Entry::casting(std::string key, std::any val) //casting the value in map into string
@@ -157,37 +146,37 @@ logfmt::Entry& logfmt::Entry::WithField(std::map<std::string, std::any>& keyMap)
 }
 void logfmt::Entry::info(std::string msg)
 {
-  entry_log -> set_pattern(processKey());
+  processKey(msg);
   entry_log -> info(msg);
 }
 
 void logfmt::Entry::trace(std::string msg)
 {
-  entry_log -> set_pattern(processKey());
+  processKey(msg);
   entry_log -> trace(msg);
 }
 
 void logfmt::Entry::debug(std::string msg)
 {
-  entry_log -> set_pattern(processKey());
+  processKey(msg);
   entry_log -> debug(msg);
 }
 
 void logfmt::Entry::warn(std::string msg)
 {
-  entry_log -> set_pattern(processKey());
+  processKey(msg);
   entry_log -> warn(msg);
 }
 
 void logfmt::Entry::error(std::string msg)
 {
-  entry_log -> set_pattern(processKey());
+  processKey(msg);
   entry_log -> error(msg);
 }
 
 void logfmt::Entry::critical(std::string msg)
 {
-  entry_log -> set_pattern(processKey());
+  processKey(msg);
   entry_log -> critical(msg);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -213,11 +202,13 @@ logfmt::logfmt(std::string name, bool to_file) //constructor
 void logfmt::OutputJSON()
 {
   JSONstatus = true;
+  logger -> set_pattern(JSONformatter());
 }
 
 void logfmt::OutputDefault()
 {
   JSONstatus = false;
+  logger -> set_pattern("%+");
 }
 
 logfmt::Entry& logfmt::WithField(std::map<std::string, std::any>& keyMap)
@@ -226,82 +217,69 @@ logfmt::Entry& logfmt::WithField(std::map<std::string, std::any>& keyMap)
   return loggerEntry.WithField(keyMap);
 }
 
+std::string logfmt::AddQuotation(std::string msg) //return quotation in message input
+{
+  return "\"" + msg + "\" ";
+}
+
 std::string logfmt::JSONformatter()
 {
-  return "\"date\" : \"%d-%m-%Y\" , \"time\" : \"%H:%M:%S\" , \"name\" : \"%n\" , \"level\" : \"%^%l%$\" , \"message\" : \"%v\" ";
+  return "{ \"date\" : \"%d-%m-%Y\" , \"time\" : \"%H:%M:%S\" , \"name\" : \"%n\" , \"level\" : \"%^%l%$\" , \"message\" : %v}";
 }
 
 //basic logging
 void logfmt::info(std::string msg)
 {
-  if(JSONstatus)
+  if (JSONstatus)
   {
-    logger -> set_pattern("{ " + JSONformatter() + "}");
+    msg = AddQuotation(msg);
   }
-  else
-  {
-    logger -> set_pattern("%+");
-  }
+
   logger -> info(msg);
 }
 
 void logfmt::trace(std::string msg)
 {
-  if(JSONstatus)
+  if (JSONstatus)
   {
-    logger -> set_pattern("{ " + JSONformatter() + "}");
+    msg = AddQuotation(msg);
   }
-  else
-  {
-    logger -> set_pattern("%+");
-  }
+
   logger -> trace(msg);
 }
 void logfmt::debug(std::string msg)
 {
-  if(JSONstatus)
+  if (JSONstatus)
   {
-    logger -> set_pattern("{ " + JSONformatter() + "}");
+    msg = AddQuotation(msg);
   }
-  else
-  {
-    logger -> set_pattern("%+");
-  }
+
   logger -> debug(msg);
 }
 void logfmt::warn(std::string msg)
 {
-  if(JSONstatus)
+  if (JSONstatus)
   {
-    logger -> set_pattern("{ " + JSONformatter() + "}");
+    msg = AddQuotation(msg);
   }
-  else
-  {
-    logger -> set_pattern("%+");
-  }
+
   logger -> warn(msg);
 }
 void logfmt::error(std::string msg)
 {
-  if(JSONstatus)
+  if (JSONstatus)
   {
-    logger -> set_pattern("{ " + JSONformatter() + "}");
+    msg = AddQuotation(msg);
   }
-  else
-  {
-    logger -> set_pattern("%+");
-  }
+
   logger -> error(msg);
 }
 void logfmt::critical(std::string msg)
 {
-  if(JSONstatus)
+  if (JSONstatus)
   {
-    logger -> set_pattern("{ " + JSONformatter() + "}");
+    msg = AddQuotation(msg);
   }
-  else
-  {
-    logger -> set_pattern("%+");
-  }
+
   logger -> critical(msg);
 }

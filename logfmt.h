@@ -21,9 +21,7 @@ private:
       bool JSON;
       //function
       std::string AddQuotation(std::string msg);
-      std::string JSONformatter();
-      std::string processPattern(std::string pattern);
-      std::string processKey();
+      void processKey(std::string& msg);
       std::string casting(std::string key, std::any val);
     public:
       Entry(); //default ctor
@@ -50,6 +48,8 @@ public:
   void OutputDefault();
   logfmt::Entry& WithField(std::map<std::string, std::any>& keyMap);
   std::string JSONformatter();
+  std::string AddQuotation(std::string msg);
+
   //basic logging
   void info(std::string msg);
   void trace(std::string msg);
