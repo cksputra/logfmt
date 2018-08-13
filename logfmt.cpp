@@ -5,9 +5,7 @@
 // class Entry
 
 // private
-std::string logfmt::Entry::add_quotation(
-    std::string msg)  // return quotation in message input
-{
+std::string logfmt::Entry::add_quotation(std::string msg) {
   return "\"" + msg + "\"";
 }
 
@@ -15,11 +13,7 @@ void logfmt::Entry::process_key(std::string& msg) {
   std::string pattern = " ";
 
   for (auto& [key, val] : entry_field) {
-    if (JSON) {
-      pattern = pattern + cast_JSON(key, val);
-    } else {
-      pattern = pattern + cast_default(key, val);
-    }
+    pattern = pattern + cast_key(key, val);
   }
 
   if (JSON) {
@@ -29,13 +23,14 @@ void logfmt::Entry::process_key(std::string& msg) {
   msg = msg + pattern;
 }
 
-std::string logfmt::Entry::cast_default(
-    std::string key,
-    std::any val)  // casting the value in map into default format
-{
+std::string logfmt::Entry::cast_key(std::string key, std::any val) {
   std::string custom_string;
 
-  custom_string = custom_string + key + " = ";
+  if (JSON) {
+    custom_string = ", " + add_quotation(key) + " : ";
+  } else {
+    custom_string = custom_string + key + " = ";
+  }
   if (val.type() == typeid(char)) {
     custom_string = custom_string + "\"";
     custom_string += (std::any_cast<char>(val));
@@ -69,66 +64,19 @@ std::string logfmt::Entry::cast_default(
   return custom_string;
 }
 
-std::string logfmt::Entry::cast_JSON(
-    std::string key, std::any val)  // casting the value in map into json format
-{
-  std::string custom_string = ", " + add_quotation(key) + " : ";
-  // check type for any_cast
-  if (val.type() == typeid(char))  // char
-  {
-    custom_string = custom_string + "\"";
-    custom_string += (std::any_cast<char>(val));
-    custom_string = custom_string + "\" ";
-  } else if (val.type() == typeid(const char*))  // array of char
-  {
-    std::string temp(std::any_cast<const char*>(val));
-    custom_string = custom_string + add_quotation(temp) + " ";
-  } else if (val.type() == typeid(int))  // integer
-  {
-    custom_string =
-        custom_string + std::to_string(std::any_cast<int>(val)) + " ";
-  } else if (val.type() == typeid(float))  // float
-  {
-    custom_string =
-        custom_string + std::to_string(std::any_cast<float>(val)) + " ";
-  } else if (val.type() == typeid(double))  // double
-  {
-    custom_string =
-        custom_string + std::to_string(std::any_cast<double>(val)) + " ";
-  } else if (val.type() == typeid(bool))  // boolean
-  {
-    if (std::any_cast<bool>(val) == 1) {
-      custom_string = custom_string + "true ";
-    } else if (std::any_cast<bool>(val) == 0) {
-      custom_string = custom_string + "false ";
-    }
-  } else if (val.type() == typeid(std::string))  // string
-  {
-    custom_string =
-        custom_string + add_quotation(std::any_cast<std::string>(val)) + " ";
-  } else if (val.type() == typeid(long))  // long
-  {
-    custom_string =
-        custom_string + std::to_string(std::any_cast<long>(val)) + " ";
-  }
-
-  return custom_string;
-}
-
 // public
 logfmt::Entry::Entry() {
   // default ctor (not used)
 }
 
-logfmt::Entry::Entry(std::shared_ptr<spdlog::logger>& log, bool JSON)  // ctor
-{
+logfmt::Entry::Entry(std::shared_ptr<spdlog::logger>& log, bool JSON) {
   entry_log = log;
   this->JSON = JSON;
 }
 
 logfmt::Entry& logfmt::Entry::with_field(
-    std::map<std::string, std::any>& keyMap) {
-  entry_field = keyMap;
+    std::map<std::string, std::any>& key_map) {
+  entry_field = key_map;
   return *this;
 }
 void logfmt::Entry::info(std::string msg) {
@@ -165,8 +113,8 @@ void logfmt::Entry::critical(std::string msg) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 // logfmt implementation
 
-logfmt::logfmt(std::string name, bool to_file)  // constructor
-{
+// ctor
+logfmt::logfmt(std::string name, bool to_file) {
   if (to_file) {
     logger = spdlog::basic_logger_mt(name, "logs/basic-log.txt");
   } else {
@@ -187,14 +135,12 @@ void logfmt::default_output() {
   logger->set_pattern("%+");
 }
 
-logfmt::Entry& logfmt::with_field(std::map<std::string, std::any>& keyMap) {
+logfmt::Entry& logfmt::with_field(std::map<std::string, std::any>& key_map) {
   logger_entry = Entry(logger, JSON_status);
-  return logger_entry.with_field(keyMap);
+  return logger_entry.with_field(key_map);
 }
 
-std::string logfmt::add_quotation(
-    std::string msg)  // return quotation in message input
-{
+std::string logfmt::add_quotation(std::string msg) {
   return "\"" + msg + "\" ";
 }
 
